@@ -50,8 +50,22 @@ const orders = [
   families: [...order.families].sort((a,b)=>a.name.localeCompare(b.name)).map(f => ({ ...f, species: [...f.species].sort((a,b)=>a.scientific.localeCompare(b.scientific)) })),
 })).map(order => ({ ...order, familyCount: order.families.length, speciesCount: order.families.reduce((n,f)=>n+f.species.length,0)}));
 
-function SpeciesName({ item }) {
-  return <span className="speciesText"><em className="scientific">{item.scientific}</em>{item.common && <span className="commonName"> — {item.common}</span>}</span>;
+function SpeciesName({ item }) { return <span className="speciesText"><em className="scientific">{item.scientific}</em>{item.common && <span className="commonName"> — {item.common}</span>}</span>; }
+
+function OrderScheme({ orders, active, onSelect }) {
+  return <section className="scheme" aria-label="Esquema de clasificación">
+    <div className="schemeBox schemeTop">Anfibios</div>
+    <div className="schemeLine vertical topLine" />
+    <div className="schemeBox schemeMid">Lisamphibia</div>
+    <div className="schemeLine vertical midLine" />
+    <div className="schemeLine horizontal branchLine" />
+    <div className="schemeOrders">
+      {orders.map(order => <button key={order.name} className={active === order.name ? 'schemeOrder active' : 'schemeOrder'} style={{'--c': order.color}} onClick={() => onSelect(order.name)}>
+        <div className="schemePhoto"><span>{order.icon}</span></div>
+        <div className="schemeLabel">{order.name.toUpperCase()}</div>
+      </button>)}
+    </div>
+  </section>;
 }
 
 function Modal({ family, order, onClose }) {
@@ -59,21 +73,14 @@ function Modal({ family, order, onClose }) {
     <motion.article className="modal" style={{'--c': order.color}} initial={{opacity:0,y:28,scale:.96}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:28,scale:.96}} onClick={e=>e.stopPropagation()}>
       <button className="close" onClick={onClose}><X size={20}/></button>
       <div className="modalHead"><div className="bigIcon">{order.icon}</div><div><p className="eyebrow">Orden {order.name} · Familia</p><h2>{family.name}</h2><p className="common">{family.common}</p></div></div>
-      <div className="infoGrid familyOnly">
-        <section className="wide"><h3>Características de la familia</h3>{family.traits.map(t=><p key={t}>• {t}</p>)}</section>
-        <section className="wide"><h3>Especies representativas</h3>{family.species.length ? <div className="speciesGrid">{family.species.map(s=><div className="species" key={s.scientific}><SpeciesName item={s}/></div>)}</div> : <p>No se detallan especies científicas para esta familia.</p>}</section>
-      </div>
+      <div className="infoGrid familyOnly"><section className="wide"><h3>Características de la familia</h3>{family.traits.map(t=><p key={t}>• {t}</p>)}</section><section className="wide"><h3>Especies representativas</h3>{family.species.length ? <div className="speciesGrid">{family.species.map(s=><div className="species" key={s.scientific}><SpeciesName item={s}/></div>)}</div> : <p>No se detallan especies científicas para esta familia.</p>}</section></div>
     </motion.article>
   </motion.div>}</AnimatePresence>
 }
 
 function FamilyCard({ family, order, index, onOpen }) {
   return <motion.button className="familyCard" style={{'--c': order.color}} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:index*.025}} onClick={()=>onOpen(family, order)}>
-    <div className="cardTop"><span>{String(index+1).padStart(2,'0')}</span><b>{family.name}</b></div>
-    <p className="common">{family.common}</p>
-    <p className="traitPreview">{family.traits.slice(0,2).join('. ')}.</p>
-    <div className="miniSpecies">{family.species.slice(0,3).map(s=><SpeciesName key={s.scientific} item={s}/>)}{family.species.length>3 && <span>+{family.species.length-3} más</span>}</div>
-    <div className="openLine">Ver ficha <ChevronRight size={16}/></div>
+    <div className="cardTop"><span>{String(index+1).padStart(2,'0')}</span><b>{family.name}</b></div><p className="common">{family.common}</p><p className="traitPreview">{family.traits.slice(0,2).join('. ')}.</p><div className="miniSpecies">{family.species.slice(0,3).map(s=><SpeciesName key={s.scientific} item={s}/>)}{family.species.length>3 && <span>+{family.species.length-3} más</span>}</div><div className="openLine">Ver ficha <ChevronRight size={16}/></div>
   </motion.button>
 }
 
@@ -85,12 +92,14 @@ export default function App() {
   const [presentation, setPresentation] = useState(false);
   const filteredOrders = useMemo(() => orders.filter(o => active === 'Todos' || o.name === active).map(o => ({...o, families: o.families.filter(f => `${o.name} ${f.name} ${f.common} ${f.traits.join(' ')} ${f.species.map(s=>`${s.scientific} ${s.common}`).join(' ')}`.toLowerCase().includes(query.toLowerCase()))})).filter(o => o.families.length), [active, query]);
   const openModal = (family, order) => { setSelected(family); setSelectedOrder(order); };
+  const selectOrder = (name) => { setActive(name); setQuery(''); setTimeout(() => document.getElementById(`orden-${name}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); };
 
   return <main className={presentation ? 'app presentation' : 'app'}>
     <section className="hero coverOnly"><div className="heroOrb one"/><div className="heroOrb two"/><h1>Clasificación Amphibia</h1></section>
+    <OrderScheme orders={orders} active={active} onSelect={selectOrder} />
     <section className="controls"><label><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar orden, familia o especie..."/></label><label><Filter size={18}/><select value={active} onChange={e=>setActive(e.target.value)}><option>Todos</option>{orders.map(o=><option key={o.name}>{o.name}</option>)}</select></label></section>
-    <section className="treeIntro"><BookOpen size={20}/><div><h2>Esquema general</h2><p>Clase Amphibia → órdenes en orden alfabético → familias en orden alfabético → especies científicas en cursiva.</p></div><button className="presentationBtn small" onClick={()=>setPresentation(!presentation)}><Presentation size={18}/>{presentation ? 'Salir' : 'Presentar'}</button></section>
-    <section className="orders">{filteredOrders.map(order => <section className="orderBlock" key={order.name} style={{'--c':order.color}}><div className="orderHeader"><div className="orderIcon">{order.icon}</div><div><p className="eyebrow">Orden</p><h2>{order.name}</h2><p>{order.common}</p></div><div className="orderNumbers"><span>{order.families.length} familias</span><span>{order.speciesCount} especies</span></div></div><p className="orderSummary">{order.summary}</p><div className="orderTraits">{order.traits.map(t=><span key={t}>{t}</span>)}</div><div className="cardsGrid">{order.families.map((family,i)=><FamilyCard key={family.name} family={family} order={order} index={i} onOpen={openModal}/>)}</div></section>)}</section>
+    <section className="treeIntro"><BookOpen size={20}/><div><h2>Esquema general</h2><p>Presiona Anura, Caudata o Gymnophiona para abrir las familias correspondientes. Clase Amphibia → Lisamphibia → órdenes → familias.</p></div><button className="presentationBtn small" onClick={()=>setPresentation(!presentation)}><Presentation size={18}/>{presentation ? 'Salir' : 'Presentar'}</button></section>
+    <section className="orders">{filteredOrders.map(order => <section id={`orden-${order.name}`} className="orderBlock" key={order.name} style={{'--c':order.color}}><div className="orderHeader"><div className="orderIcon">{order.icon}</div><div><p className="eyebrow">Orden</p><h2>{order.name}</h2><p>{order.common}</p></div><div className="orderNumbers"><span>{order.families.length} familias</span><span>{order.speciesCount} especies</span></div></div><p className="orderSummary">{order.summary}</p><div className="orderTraits">{order.traits.map(t=><span key={t}>{t}</span>)}</div><div className="cardsGrid">{order.families.map((family,i)=><FamilyCard key={family.name} family={family} order={order} index={i} onOpen={openModal}/>)}</div></section>)}</section>
     <footer><GitBranch size={18}/> Fauna33 · Clase Amphibia · esquema taxonómico interactivo</footer>
     <Modal family={selected} order={selectedOrder || orders[0]} onClose={()=>setSelected(null)}/>
   </main>
