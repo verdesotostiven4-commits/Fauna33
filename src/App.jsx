@@ -1,15 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Search, Filter, BookOpen, GitBranch, X, Presentation, ShieldCheck, ChevronRight } from 'lucide-react';
+import { Search, Filter, BookOpen, GitBranch, X, Presentation, ChevronRight } from 'lucide-react';
 
-const sp = (scientific, common = '', endemic = 'No especificado') => ({ scientific, common, endemic });
+const sp = (scientific, common = '') => ({ scientific, common });
 
 const orders = [
   {
-    name: 'Anura',
-    common: 'ranas y sapos',
-    icon: '🐸',
-    color: '#20c565',
+    name: 'Anura', common: 'ranas y sapos', icon: '🐸', color: '#20c565',
     summary: 'Conformada por ranas y sapos. Los adultos carecen de cola; es el grupo más numeroso y posee cuerdas vocales. En Ecuador se registran 14 familias, 65 géneros, 621 especies y 291 endémicas.',
     traits: ['Adultos sin cola', 'Patas traseras largas', 'Cabeza y tronco unidos, sin cuello estrecho', 'Machos con sacos gulares para croar', 'Tímpano descubierto', 'Extremidades anteriores con 4 dedos y posteriores con 5 dedos'],
     families: [
@@ -26,14 +23,11 @@ const orders = [
       { name:'Pipidae', common:'sapo de Surinam', traits:['Completamente acuáticos','Grandes membranas entre los dedos','Cabeza y cuerpo aplanados','Carecen de párpados','Huevos en bolsas en la espalda'], species:[sp('Pipa pipa','rana sin lengua')] },
       { name:'Ranidae', common:'ranas comunes', traits:['Patas largas y musculosas','Membranas interdigitales en los pies','Cuerpo hidrodinámico ideal para saltar y nadar','Reproducción acuática','Grupo de ranas verdaderas'], species:[sp('Lithobates bwana','rana común del río de Dixon'),sp('Lithobates palmipes','rana común del río Amazonas'),sp('Lithobates vaillanti','rana común de Vaillant')] },
       { name:'Strabomantidae', common:'ranas cutín', traits:['Antes Leptodactylidae; actual Strabomantidae','Discos de los dedos truncados o en forma de T','Incluye cutines y sapitos de hojarasca'], species:[sp('Noblella heyeri','rana sureña de Heyer'),sp('Noblella myrmecoides','rana sureña de Loreto'),sp('Oreobates quixensis','sapito bocón amazónico'),sp('Pristimantis achatinus','cutín común de occidente'),sp('Pristimantis acuminatus','cutín puntiagudo'),sp('Pristimantis altamazonicus','cutín amazónico'),sp('Pristimantis condor','cutín condor'),sp('Pristimantis conspicillatus','cutín de Zamora'),sp('Pristimantis eriphus','cutín de musgo'),sp('Pristimantis galdi','cutín verde amazónico')] },
-      { name:'Telmatobiidae', common:'kaylas, urcos, ranas acuáticas', traits:['Endémicas de la cordillera andina en Sudamérica','Ranas acuáticas andinas'], species:[sp('Telmatobius cirrhacelis','uco de Loja','Sí'),sp('Telmatobius niger','uco de manchas naranjas','Sí'),sp('Telmatobius vellardi','uco de Vellard','Sí')] }
+      { name:'Telmatobiidae', common:'kaylas, urcos, ranas acuáticas', traits:['Endémicas de la cordillera andina en Sudamérica','Ranas acuáticas andinas'], species:[sp('Telmatobius cirrhacelis','uco de Loja'),sp('Telmatobius niger','uco de manchas naranjas'),sp('Telmatobius vellardi','uco de Vellard')] }
     ]
   },
   {
-    name: 'Caudata',
-    common: 'salamandras',
-    icon: '🦎',
-    color: '#22a6f2',
+    name: 'Caudata', common: 'salamandras', icon: '🦎', color: '#22a6f2',
     summary: 'Orden de salamandras. Presentan cabeza y cuello diferenciados, tronco largo y cilíndrico, cola larga y patas delanteras y traseras de tamaño similar.',
     traits: ['Cabeza y cuello diferenciados', 'Tronco largo y cilíndrico', 'Larga cola', 'Patas delanteras y traseras de igual tamaño'],
     families: [
@@ -41,17 +35,14 @@ const orders = [
     ]
   },
   {
-    name: 'Gymnophiona',
-    common: 'cecilias',
-    icon: '🪱',
-    color: '#b977ff',
+    name: 'Gymnophiona', common: 'cecilias', icon: '🪱', color: '#b977ff',
     summary: 'Orden de anfibios sin patas. Tienen cuerpo largo, casi sin cola, ojos reducidos por su vida subterránea y son difíciles de observar porque rara vez salen de sus madrigueras.',
     traits: ['Anfibios sin patas', 'Cuerpo largo y casi sin cola', 'Ojos reducidos por forma de vida subterránea', 'Excavadoras', 'Difíciles de observar'],
     families: [
       { name:'Caeciliidae', common:'culebras ciegas', traits:['Habitan bajo tierra en galerías de hasta 1 m','Viven entre desechos vegetales, árboles caídos y agua','Miden de 30 cm a 1 m','Hábitos nocturnos','Boca subterminal','Cráneo macizo como adaptación a vida subterránea'], species:[sp('Caecilia abitaguae','cecilia de Abitagua'),sp('Caecilia albiventris','cecilia de vientre blanco'),sp('Caecilia attenuata','cecilia de Santa Rosa'),sp('Caecilia bokermanni','cecilia de Bokermann'),sp('Caecilia crassisquama','cecilia de Normandía'),sp('Caecilia disossea','cecilia del río Santiago'),sp('Caecilia dunni','cecilia de Dunn'),sp('Caecilia guntheri','cecilia de Gunther'),sp('Caecilia leucocephala','cecilia de cabeza blanca'),sp('Caecilia nigricans','cecilia del río Lita'),sp('Caecilia orientalis','cecilia oriental'),sp('Caecilia pachynema','cecilia de Intac'),sp('Caecilia subterminalis','cecilia de Taylor'),sp('Caecilia tentaculata','cecilia Yamba'),sp('Caecilia tenuissima','cecilia de Guayaquil'),sp('Oscaecilia bassleri','cecilia del río Pastaza'),sp('Oscaecilia equatorialis','cecilia de Ecuador')] },
       { name:'Rhinatrematidae', common:'cecilias anilladas', traits:['Cuerpo fuertemente anillado','Ranuras secundarias y terciarias','Cuerpo termina en cola corta pero verdadera','Ojos visibles externamente','Oído medio con columnuela'], species:[sp('Epicrionops bicolor','cecilia bicolor'),sp('Epicrionops petersi','cecilia de Peters')] },
       { name:'Siphonopidae', common:'cecilias de bosques húmedos', traits:['Se distribuyen por Sudamérica','Habitan bosques húmedos tropicales o subtropicales','También se registran en plantaciones, jardines rurales y zonas degradadas previamente boscosas'], species:[sp('Microcaecilia albiceps','microcecilia de cabeza blanca'),sp('Siphonops annulatus','cecilia de anillos')] },
-      { name:'Typhlonectidae', common:'cecilias acuáticas amazónicas', traits:['Cecilias asociadas a bosque húmedo tropical amazónico','Una especie se registra sobre 1.000 m de altitud en la provincia de Napo'], species:[sp('Chthonerpeton onorei','cecilia de El Reventador','Sí'),sp('Potomotyphlus kaupii','cecilia de Kaupi')] }
+      { name:'Typhlonectidae', common:'cecilias acuáticas amazónicas', traits:['Cecilias asociadas a bosque húmedo tropical amazónico','Una especie se registra sobre 1.000 m de altitud en la provincia de Napo'], species:[sp('Chthonerpeton onorei','cecilia de El Reventador'),sp('Potomotyphlus kaupii','cecilia de Kaupi')] }
     ]
   }
 ].map(order => ({
@@ -60,7 +51,7 @@ const orders = [
 })).map(order => ({ ...order, familyCount: order.families.length, speciesCount: order.families.reduce((n,f)=>n+f.species.length,0)}));
 
 function SpeciesName({ item }) {
-  return <span className="speciesText"><em className="scientific">{item.scientific}</em>{item.common && <span className="commonName"> — {item.common}</span>}<span className={item.endemic === 'Sí' ? 'endemic yes' : 'endemic'}>{item.endemic === 'Sí' ? 'Endémica: sí' : 'Endemismo: no especificado'}</span></span>;
+  return <span className="speciesText"><em className="scientific">{item.scientific}</em>{item.common && <span className="commonName"> — {item.common}</span>}</span>;
 }
 
 function Modal({ family, order, onClose }) {
@@ -71,7 +62,7 @@ function Modal({ family, order, onClose }) {
       <div className="infoGrid">
         <section><h3>Características de la familia</h3>{family.traits.map(t=><p key={t}>• {t}</p>)}</section>
         <section><h3>Características del orden</h3>{order.traits.map(t=><p key={t}>• {t}</p>)}</section>
-        <section className="wide"><h3>Especies endémicas y/o representativas</h3>{family.species.length ? <div className="speciesGrid">{family.species.map(s=><div className="species" key={s.scientific}><SpeciesName item={s}/></div>)}</div> : <p>No se detallan especies científicas para esta familia.</p>}</section>
+        <section className="wide"><h3>Especies representativas</h3>{family.species.length ? <div className="speciesGrid">{family.species.map(s=><div className="species" key={s.scientific}><SpeciesName item={s}/></div>)}</div> : <p>No se detallan especies científicas para esta familia.</p>}</section>
       </div>
     </motion.article>
   </motion.div>}</AnimatePresence>
@@ -93,18 +84,13 @@ export default function App() {
   const [selected, setSelected] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [presentation, setPresentation] = useState(false);
-  const filteredOrders = useMemo(() => orders.filter(o => active === 'Todos' || o.name === active).map(o => ({...o, families: o.families.filter(f => `${o.name} ${f.name} ${f.common} ${f.traits.join(' ')} ${f.species.map(s=>`${s.scientific} ${s.common} ${s.endemic}`).join(' ')}`.toLowerCase().includes(query.toLowerCase()))})).filter(o => o.families.length), [active, query]);
-  const totals = orders.reduce((acc,o)=>({families:acc.families+o.familyCount,species:acc.species+o.speciesCount}),{families:0,species:0});
+  const filteredOrders = useMemo(() => orders.filter(o => active === 'Todos' || o.name === active).map(o => ({...o, families: o.families.filter(f => `${o.name} ${f.name} ${f.common} ${f.traits.join(' ')} ${f.species.map(s=>`${s.scientific} ${s.common}`).join(' ')}`.toLowerCase().includes(query.toLowerCase()))})).filter(o => o.families.length), [active, query]);
   const openModal = (family, order) => { setSelected(family); setSelectedOrder(order); };
 
   return <main className={presentation ? 'app presentation' : 'app'}>
-    <section className="hero">
+    <section className="hero coverOnly">
       <div className="heroOrb one"/><div className="heroOrb two"/>
-      <div className="badge"><ShieldCheck size={16}/> Esquema taxonómico interactivo</div>
-      <h1>Clase Amphibia</h1>
-      <p className="subtitle">Esquema alfabético por órdenes y familias, con nombres científicos en cursiva y especies endémicas o representativas.</p>
-      <div className="stats"><div><b>3</b><span>órdenes</span></div><div><b>{totals.families}</b><span>familias</span></div><div><b>{totals.species}</b><span>especies listadas</span></div></div>
-      <button className="presentationBtn" onClick={()=>setPresentation(!presentation)}><Presentation size={18}/>{presentation ? 'Salir del modo presentación' : 'Modo presentación'}</button>
+      <h1>Clasificación Amphibia</h1>
     </section>
 
     <section className="controls">
@@ -112,7 +98,7 @@ export default function App() {
       <label><Filter size={18}/><select value={active} onChange={e=>setActive(e.target.value)}><option>Todos</option>{orders.map(o=><option key={o.name}>{o.name}</option>)}</select></label>
     </section>
 
-    <section className="treeIntro"><BookOpen size={20}/><div><h2>Esquema general</h2><p>Clase Amphibia → órdenes en orden alfabético → familias en orden alfabético → especies científicas en cursiva.</p></div></section>
+    <section className="treeIntro"><BookOpen size={20}/><div><h2>Esquema general</h2><p>Clase Amphibia → órdenes en orden alfabético → familias en orden alfabético → especies científicas en cursiva.</p></div><button className="presentationBtn small" onClick={()=>setPresentation(!presentation)}><Presentation size={18}/>{presentation ? 'Salir' : 'Presentar'}</button></section>
 
     <section className="orders">
       {filteredOrders.map(order => <section className="orderBlock" key={order.name} style={{'--c':order.color}}>
