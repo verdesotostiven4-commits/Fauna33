@@ -1,0 +1,42 @@
+.familyImage{
+  width:100%;
+  height:132px;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);
+  background:linear-gradient(135deg,#dcefe3,#f6fff8);
+  margin:12px 0 12px;
+  position:relative;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 10px 26px rgba(0,0,0,.10);
+}
+.familyImage img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.familyImage.imageError::after{
+  content:'Imagen no disponible';
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#496253;
+  font-weight:800;
+  background:#eef7f1;
+}
+.familyImageModal{
+  height:280px;
+  border-radius:24px;
+  margin:22px 0 6px;
+}
+.familyImageModal img{
+  object-fit:cover;
+}
+.familyCard .traitPreview{
+  margin-top:8px;
+}
+@media(max-width:560px){
+  .familyImage{height:118px}
+  .familyImageModal{height:210px}
+}
