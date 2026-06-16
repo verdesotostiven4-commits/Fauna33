@@ -1,0 +1,25 @@
+.schemeOrder:nth-child(1) .schemePhoto{
+  background-image:url('https://cdn0.ecologiaverde.com/es/posts/7/2/8/anuros_caracteristicas_y_ejemplos_5827_1200.jpg');
+  background-size:cover;
+  background-position:center;
+}
+.schemeOrder:nth-child(2) .schemePhoto{
+  background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWG5N2VqXg6OgnERRxQN751fz1m9dgWZxGfpriPfsk_6vGqN7VeJuswhg&s=10');
+  background-size:cover;
+  background-position:center;
+}
+.schemeOrder:nth-child(3) .schemePhoto{
+  background-image:url('https://upload.wikimedia.org/wikipedia/commons/6/66/Caecilian_wynaad1.jpg');
+  background-size:cover;
+  background-position:center;
+}
+.schemeOrder .schemePhoto span{
+  opacity:0;
+}
+.schemeOrder .schemePhoto::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.18));
+  pointer-events:none;
+}
