@@ -4,6 +4,7 @@ import App from './App.jsx';
 import './index.css';
 import './scheme.css';
 import './familyImages.css';
+import './orderImages.css';
 import './familyImages.js';
 
 createRoot(document.getElementById('root')).render(<App />);
