@@ -1,0 +1,153 @@
+.app .hero.coverOnly{
+  min-height:48vh;
+  padding-bottom:42px;
+}
+.app .scheme{
+  width:min(1160px,94vw);
+  margin:-14px auto 42px;
+  padding:0 0 34px;
+  display:grid;
+  justify-items:center;
+  position:relative;
+  overflow:visible;
+}
+.app .schemeBox{
+  position:relative;
+  z-index:3;
+  background:#151515;
+  border:5px solid #22c55e;
+  color:#fff;
+  border-radius:0;
+  text-shadow:0 2px 0 rgba(0,0,0,.55);
+}
+.app .schemeTop{
+  width:min(560px,88vw);
+  min-width:0;
+  padding:16px 28px;
+  font-size:clamp(42px,7vw,76px);
+}
+.app .schemeMid{
+  margin-top:70px;
+  width:min(380px,70vw);
+  padding:10px 22px;
+  font-size:clamp(28px,4.5vw,48px);
+}
+.app .schemeLine{
+  background:#22c55e;
+  box-shadow:0 0 0 1px rgba(0,0,0,.15),0 0 18px rgba(34,197,94,.45);
+  z-index:1;
+}
+.app .topLine{
+  top:92px;
+  height:74px;
+}
+.app .midLine{
+  top:232px;
+  height:82px;
+}
+.app .branchLine{
+  top:310px;
+  left:16.7%;
+  right:16.7%;
+  height:6px;
+}
+.app .schemeOrders{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:34px;
+  margin-top:84px;
+  align-items:start;
+}
+.app .schemeOrder{
+  position:relative;
+  display:grid;
+  justify-items:center;
+}
+.app .schemeOrder:before{
+  display:none;
+}
+.app .schemeStem{
+  position:absolute;
+  left:50%;
+  top:-84px;
+  width:6px;
+  height:84px;
+  transform:translateX(-50%);
+  background:#22c55e;
+  box-shadow:0 0 18px rgba(34,197,94,.45);
+  z-index:1;
+}
+.app .schemePhoto{
+  width:100%;
+  max-width:330px;
+  height:175px;
+  position:relative;
+  z-index:3;
+  border:5px solid #22c55e;
+  border-radius:0;
+  background:#dce7dc;
+}
+.app .schemePhoto span{
+  font-size:84px;
+}
+.app .schemeLabel{
+  position:relative;
+  z-index:4;
+  margin-top:0;
+  transform:translateY(-1px);
+  min-width:220px;
+  justify-content:center;
+  border:2px solid #22c55e;
+  border-radius:0;
+  background:#121212;
+  color:#fff;
+  padding:8px 22px;
+  font-size:clamp(28px,3.5vw,42px);
+}
+.app .schemeOrder.active .schemeLabel{
+  background:#22c55e;
+  color:#07140e;
+}
+.app .schemeOrder.active .schemePhoto{
+  outline:4px solid rgba(34,197,94,.32);
+}
+.app .controls,
+.app .treeIntro,
+.app .orders{
+  animation:openFamilies .28s ease both;
+}
+@keyframes openFamilies{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:980px){
+  .app .scheme{
+    width:min(760px,94vw);
+  }
+  .app .branchLine,
+  .app .midLine{
+    display:block;
+  }
+  .app .schemeOrders{
+    grid-template-columns:1fr;
+    gap:38px;
+    margin-top:72px;
+  }
+  .app .branchLine{
+    display:none;
+  }
+  .app .schemeStem{
+    display:none;
+  }
+  .app .schemePhoto{
+    max-width:420px;
+    height:145px;
+  }
+}
+@media(max-width:560px){
+  .app .schemeTop{font-size:42px;width:100%}
+  .app .schemeMid{font-size:30px;width:78%}
+  .app .schemePhoto{height:125px}
+  .app .schemeLabel{min-width:180px;font-size:28px}
+}
